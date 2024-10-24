@@ -1,0 +1,29 @@
+Custom Data Sector Format(Data Frames)
+Custom Filesystem
+Sectors are encrypted by DiskID(Key1) and Seed(Key2)
+
+Seeds:
+  0: 3
+  1: 48
+  2: 32512
+  3: 28673
+  4: 6
+  5: 69
+  6: 32256
+  7: 24579
+  8: 12
+  9: 192
+  10: 31744
+  11: 16391
+  12: 24
+  13: 384
+  14: 30720
+  15: 15
+
+Check for the Security Code of 6 BCA marks on the disc, from the 6 positions stored on the BCA encrypted area
+The 6 BCA mark positions corrupt the sector data stored on the disc, the BCA data tells the locations.
+Disc sectors get decrypted with a DiscID and RandomKey from Seed list. using the MN102H system controller in the DVD drive
+
+Encryption(XOR): DiscID(KEY1) -> RandomKey(KEY2)
+Security Check: Get DiscID -> Check BCA Marks -> BOOT
+Encryption doesn't have a random key for NR disc instead it's a fixed key after the discID, the fixed key value is 9

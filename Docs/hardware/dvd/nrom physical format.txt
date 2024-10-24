@@ -1,0 +1,78 @@
+// Burst-Cutting Area(BCA)
+struct_DiscBca
+{
+    // UserData(unencrypted), 64B
+    u8 optInfo[52];
+    u8 manufacturer[2];
+    u8 recorderDevice[2];
+    u8 bcaSerial;
+    u8 discDate[2];
+    u8 discTime[2];
+    u8 discNumber[3];
+    // SecureData(unencrypted), 12B
+    u8 key[8];
+    u8 id[4];
+    // AuthenticationData(encrypted), 48B
+    PsnRegion psn[6];
+}; // 188B
+
+struct_PsnRegion
+{
+    u32 start;
+    u32 end;
+};
+
+struct_DataFrame
+{
+    u32 id; // PSN(Physical Sector Number)
+    u16 ied; // ID Error Detection Code, CRC16
+    u8 userdata[2048]; // Sector Data
+    u8 cpr_mai[6]; // Copyright Management Information(Unused)
+    u32 edc; // Error Detection Code, CRC32
+}; // 2064B
+
+struct_ControlDataZone
+{
+    DiscManufacturingInfo m_dmi;
+    PhysicalFormatInfo m_pfi;
+};
+
+struct_PhysicalFormatInfo
+{
+    u8 reversed[6];
+    u8 discMagic; // value is -1.
+    u8 discSizeMinTransferRate; // The value is fixed on 16.
+    u8 discStructure; // The value is fixed on 1.
+    u8 recordedDensity; // The value is fixed on 1.
+    DataAreaAllocation m_dataAreaAllocation;
+    u8 reversed2[2000];
+    u8 reversed3[6];
+}; // 2048B
+
+struct_DiscManufacturingInfo
+{
+    u8 reversed[6];
+    u8 secret1[6];
+    u8 randomNumber2[6];
+    u8 secret2[6];
+    u8 randomNumber3[6];
+    char mediaId[19]; // "Nintendo Game Disk"
+    u8 randomNumber4[6];
+    u8 bookTypePartVersion; // value must be 1.
+    u8 discSizeMinReadoutRate; // The value is fixed on 16.
+    u8 discStructure; // The value is fixed on 1.
+    u8 recordedDensity; // The value is fixed on 0.
+    DataAreaAllocation m_dataAreaAllocation;
+    u8 bcaDescriptor; // The value is fixed on 128.
+    u8 reversed2[1967];
+    u8 reversed3[6];
+}; // 2048B
+
+struct_DataAreaAllocation
+{
+    u8 reversed;
+    u16 startSector; // 196608
+    u8 reversed2;
+    u16 endSector; // 909487
+    u8 reversed3[3];
+}; // 12 Bytes

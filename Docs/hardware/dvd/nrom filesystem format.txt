@@ -1,0 +1,89 @@
+struct_root
+{
+    BootHeader header;
+    BootHeaderInfo bi;
+    AppLoader appldr;
+    FileSystemTable fst;
+    u8* userdata; // application is stored here, including boot file
+};
+
+struct_BootHeader
+{
+    u8 Gamecode[4];
+    u8 MakerCode[2];
+    u8 DiscNumber;
+    u8 Version;
+    u8 AudioStreaming; //01 = Enable it. 00 = Don't
+    u8 StreamBufSize; // For the AudioEnable.
+    u8 unused_1[18];    
+    u32 DVDMagicWord; // 3258163005
+    char GameName[64];
+    u8 unused_2[416];
+    u32 NKitMagicWord;
+    u32 NKitVersion;
+    u32 ImageCRC;
+    u32 ForceCRC;
+    u32 ImageSize;
+    u32 JunkID;
+    u8 unused_3[488];
+    u32 ApploaderSize;
+    u32 ApploaderFunc1;
+    u32 ApploaderFunc2;
+    u32 ApploaderFunc3;
+    u8 unused_4[16];
+    u32 DOLOffset;
+    u32 FSTOffset;
+    u32 FSTSize;
+    u32 MaxFSTSize;
+    u32 FSTAddress;
+    u32 UserPos;
+    u32 UserLength;
+    u32 unused_5;
+};
+
+struct_BootHeaderInfo
+{
+    u32 DebugMonSize;
+    u32 SimMemSize;
+    u32 ArgOffset;
+    u32 DebugFlag;
+    u32 DebugOffset;
+    u32 DebugSize;
+    u32 RegionCode;
+    u32 TotalDisc;
+    u32 LongFileName;
+    u32 padSpec;
+    u32 dolLimit;
+    u8 pad[8148];
+}; // 8192 Bytes
+
+struct_AppLoader
+{
+    char date[16];
+    u32 entryAddress;
+    u32 size;
+    u32 rebootSize;
+    u8 pad[4];
+    u8 code;
+};
+
+struct_FileSystemTable
+{
+    u32 entityCount;
+    FileSystemEntity* m_entity;
+    StringTable* m_string;
+};
+
+struct_FileSystemEntity
+{
+    u8 flags;
+    u16 filenameOffset;
+    u32 fileOffset;
+    u32 fileSize;
+};
+
+struct_StringTable
+{
+    char name[0];
+    char dummy;
+};
