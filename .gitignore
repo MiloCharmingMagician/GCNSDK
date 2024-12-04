@@ -1,5 +1,6 @@
 # Bin
-X86/bin/*.*
+*.bin
+*.bat
 
 # Prerequisites
 *.d
