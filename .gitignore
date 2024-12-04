@@ -1,5 +1,5 @@
 # Bin
-bin/*.*
+X86/bin/*.*
 
 # Prerequisites
 *.d
